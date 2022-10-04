@@ -11,6 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "androidNavigationBar": {
+      "visible": "immersive"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -28,6 +31,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#105846"
     }
   }
 }
