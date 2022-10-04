@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { Component } from 'react'
 import { AntDesign } from "@expo/vector-icons"
+import { Dimensions } from 'react-native';
+const { width }  = Dimensions.get('window')
 
 export default class ButtonGradient extends Component {
   constructor(props){
@@ -10,7 +12,11 @@ export default class ButtonGradient extends Component {
   render(){
     return(
       <TouchableOpacity
-      style={styles.container}
+      style={{
+        marginTop: this.props.mt,
+        width: 200,
+        alignItems: 'center',
+      }}
       onPress={this.props.onPress}
     >
       <LinearGradient
@@ -40,7 +46,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   button: {
-    width: '80%',
+    width: width - 40,
     minHeight: 50,
     borderRadius: 25,
     padding: 10,

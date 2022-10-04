@@ -1,15 +1,17 @@
 import { View, Text, StyleSheet, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { TextInput, Dimensions } from 'react-native'
+import { Dimensions } from 'react-native'
 const { width } = Dimensions.get('window')
 import ButtonGradient from '../components/forms/Button';
-import  ApiClient  from '../api/client';
+import ApiClient from '../api/client';
 import { Libs } from '../lib/libs';
 import Toast from 'react-native-toast-message'
-
-
+import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
+import { LeftIcon, RightIcon, StyledTextInput, Colors, StyledInputLabel, StyledFormArea } from '../components/styled/theme';
+const { brand, darkLight, primary, gray } = Colors;
 
 const LoginScreen = ({ navigation }) => {
+  const [hidePassword, setHidePassword] = useState(true)
   const [userdata, setUserData] = useState({
     email: '',
     password: ''
@@ -35,34 +37,45 @@ const LoginScreen = ({ navigation }) => {
       <View style={style.container}>
         <Text style={style.title}>MUF</Text>
         <Text style={style.subtitle}>Inicia sesión con tu cuenta.</Text>
-        <TextInput
-          placeholder='alguien@example.com'
-          style={style.input}
-          value={userdata.email || ''}
-          onChangeText={(text) => {
-            changeUserData('email', text)
-          }}
-        />
-        <TextInput
-          placeholder='••••••••'
-          style={style.input}
-          value={userdata.password || ''}
-          secureTextEntry={true}
-          onChangeText={(text) => {
-            changeUserData('password', text)
-          }}
+        <StyledFormArea>
+          <TextInput
+            label={"Correo Electrónico"}
+            icon="mention"
+            placeholder='alguien@example.com'
+            style={style.input}
+            value={userdata.email || ''}
+            onChangeText={(text) => {
+              changeUserData('email', text)
+            }}
+          />
+          <TextInput
+            label={"Contraseña"}
+            icon="lock"
+            placeholder='••••••••'
+            style={style.input}
+            value={userdata.password || ''}
+            secureTextEntry={hidePassword}
+            isPassword={true}
+            hidePassword={hidePassword}
+            setHidePassword={setHidePassword}
+            onChangeText={(text) => {
+              changeUserData('password', text)
+            }}
+          />
+        </StyledFormArea>
 
-        />
+
         <Text style={style.forgot}
           onPress={() => {
             navigation.navigate('Forgot')
           }}
         >Olvidaste tu contraseña?</Text>
         <ButtonGradient
+          mt={20}
           text={"Iniciar sesión"}
           icon="login"
-          onPress={async ()=>{
-            if(userdata.email === '' || userdata.password === ''){
+          onPress={async () => {
+            if (userdata.email === '' || userdata.password === '') {
               Toast.show({
                 type: 'error',
                 text1: 'Error',
@@ -70,9 +83,9 @@ const LoginScreen = ({ navigation }) => {
                 position: 'top',
                 visibilityTime: 2000
               })
-            }else{
-              const {message, status} = await ApiClient.auth(userdata)
-              if(status === 200){
+            } else {
+              const { message, status } = await ApiClient.auth(userdata)
+              if (status === 200) {
                 Toast.show({
                   type: 'success',
                   text1: 'Correcto',
@@ -80,7 +93,7 @@ const LoginScreen = ({ navigation }) => {
                   position: 'top',
                   visibilityTime: 2000
                 })
-              }else{
+              } else {
                 Toast.show({
                   type: 'error',
                   text1: 'Error',
@@ -98,7 +111,7 @@ const LoginScreen = ({ navigation }) => {
           }}
         >¿No tienes cuenta?</Text>
       </View>
-      <Toast/>
+      <Toast />
     </View>
 
   )
@@ -128,25 +141,6 @@ const style = StyleSheet.create({
     fontSize: 20,
     color: 'gray'
   },
-  input: {
-    borderColor: 'gray',
-    padding: 10,
-    width: '80%',
-    height: 50,
-    marginTop: 20,
-    borderRadius: 30,
-    backgroundColor: 'white',
-    paddingStart: 30,
-    shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 7,
-},
-shadowOpacity: 0.41,
-shadowRadius: 9.11,
-
-elevation: 14,
-  },
   forgot: {
     fontSize: 14,
     color: 'gray',
@@ -154,4 +148,36 @@ elevation: 14,
   }
 })
 
+
+export const TextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
+  return (
+    <View>
+      <LeftIcon>
+        <Octicons
+          name={icon}
+          size={25}
+          color={gray}
+        />
+
+      </LeftIcon>
+      <StyledInputLabel>
+        {label}
+      </StyledInputLabel>
+      <StyledTextInput  {...props} />
+      {isPassword && (
+        <RightIcon
+          onPress={() => {
+            setHidePassword(!hidePassword)
+          }}
+        >
+          <Ionicons
+            name={hidePassword ? 'md-eye-off' : 'md-eye'}
+            size={25}
+            color={darkLight}
+          />
+        </RightIcon>
+      )}
+    </View>
+  );
+}
 export default LoginScreen

@@ -18,7 +18,7 @@ const MainNavigation = () => {
         headerTitle: '',
       }}
     >
-      <Stack.Screen 
+      <Stack.Screen
         component={LoginScreen}
         name='Login'
       />
