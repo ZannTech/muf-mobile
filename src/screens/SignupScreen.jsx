@@ -5,10 +5,12 @@ import { Colors, LeftIcon, RightIcon, StyledFormArea, StyledInputLabel, StyledTe
 import { Octicons, Ionicons } from "@expo/vector-icons"
 import ButtonGradient from '../components/forms/Button'
 import Toast from 'react-native-toast-message'
+import ApiClient from '../api/client'
 
 const { brand, darkLight, gray, primary, green, red, tertiary, secondary } = Colors
-const Signup = ({  }) => {
+const Signup = ({  navigation }) => {
   const [hidePassword, setHidePassword] = useState(true)
+  const [Loading, setLoading] = useState(false)
   const [data, setData] = useState({
     user: '',
     name: '',
@@ -27,15 +29,14 @@ const Signup = ({  }) => {
         <View style={style.container}>
           <Image
             style={{
-              height: '22%',
+              paddingTop: 30,
+              height: '30%',
               width: width,
               resizeMode: 'cover',
-              backgroundColor: '#0000',
               position: 'relative',
-              marginTop: -20,
-              transform: [{ scaleX: -1 }]
+              marginTop: -20
             }}
-            source={require('../../assets/images/head.png')}
+            source={require('../../assets/muf.png')}
           />
           <Text style={style.title}>MUF</Text>
           <Text style={style.subtitle}>Registro de usuario.</Text>
@@ -92,6 +93,8 @@ const Signup = ({  }) => {
             }}>
               <ButtonGradient
                 mt={10}
+                disabled={ Loading }
+                loading={Loading}
                 text="¡Registrarme!"
                 onPress={async ()=>{
                   if(data.email === '' || data.lastname === '' || data.name === '' || data.password === '' || data.user === ''){
@@ -101,6 +104,23 @@ const Signup = ({  }) => {
                       text2: 'Rellena todo el formulario como se pide, faltan datos por rellenar.',
                       visibilityTime: 4000,
                     })
+                  }else{
+                    setLoading(true)
+                    const {message, success} = await ApiClient.register(data)
+                    setLoading(false)
+                    if(success === true){
+                        navigation.navigate('Login', {
+                          register: true 
+                        })
+                    }else{
+                      Toast.show({
+                        type: 'error',
+                        text1: 'Error',
+                        text2: message,
+                        position: 'top',
+                        visibilityTime: 2000
+                      })
+                    }
                   }
                 }}
               />

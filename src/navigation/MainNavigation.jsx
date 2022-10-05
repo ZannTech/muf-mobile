@@ -21,6 +21,10 @@ const MainNavigation = () => {
       <Stack.Screen
         component={LoginScreen}
         name='Login'
+        initialParams={{
+          register: false
+        }}
+
       />
       <Stack.Screen 
         component={Signup}

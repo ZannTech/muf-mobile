@@ -7,8 +7,18 @@ const ApiClient  = {
             email: data.email,
             password: data.password
         })
-        console.log(login.data)
         return login.data
+    },
+    register: async (data) => {
+        const register = await axios.post(url + 'register', {
+            email : data.email,
+            password: data.password,
+            name: data.name, 
+            lastname: data.lastname,
+            user: data.user
+        })
+        console.log(register.data)
+        return register.data
     }
 }
 export default ApiClient

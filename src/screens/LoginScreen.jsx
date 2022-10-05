@@ -10,7 +10,24 @@ import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
 import { LeftIcon, RightIcon, StyledTextInput, Colors, StyledInputLabel, StyledFormArea } from '../components/styled/theme';
 const { brand, darkLight, primary, gray } = Colors;
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, route}) => {
+  const  register = route.params.register != undefined ? route.params.register : '' ;
+  const [loading, setloading] = useState(false)
+  useEffect(()=>{
+    console.log(loading)
+    if(register != ''){
+      Toast.show({
+        type: 'success',
+        text1: 'Registro completado',
+        text2: 'Te has registrado correctamente',
+        position: 'top',
+        visibilityTime: 6000
+      })
+      navigation.setParams({
+        register: false,
+      })
+    }
+  })
   const [hidePassword, setHidePassword] = useState(true)
   const [userdata, setUserData] = useState({
     email: '',
@@ -19,20 +36,18 @@ const LoginScreen = ({ navigation }) => {
   const changeUserData = (name, text) => {
     setUserData({ ...userdata, [name]: text })
   }
-  useEffect(() => {
-    console.log(userdata)
-  }, [userdata])
   return (
     <View style={style.maincontainer}>
       <Image
         style={{
+          paddingTop: 30,
           height: '30%',
           width: width,
           resizeMode: 'cover',
           position: 'relative',
           marginTop: -20
         }}
-        source={require('../../assets/images/head.png')}
+        source={require('./../../assets/muf.png')}
       />
       <View style={style.container}>
         <Text style={style.title}>MUF</Text>
@@ -72,9 +87,12 @@ const LoginScreen = ({ navigation }) => {
         >Olvidaste tu contraseña?</Text>
         <ButtonGradient
           mt={20}
+          disabled={loading}
+          loading={loading}
           text={"Iniciar sesión"}
-          icon="login"
+          icon="signup"
           onPress={async () => {
+            setloading(true)
             if (userdata.email === '' || userdata.password === '') {
               Toast.show({
                 type: 'error',
@@ -84,8 +102,9 @@ const LoginScreen = ({ navigation }) => {
                 visibilityTime: 2000
               })
             } else {
-              const { message, status } = await ApiClient.auth(userdata)
-              if (status === 200) {
+              const {message, success} = await ApiClient.auth(userdata)
+              setloading(false);
+              if (success === true) {
                 Toast.show({
                   type: 'success',
                   text1: 'Correcto',
@@ -111,7 +130,9 @@ const LoginScreen = ({ navigation }) => {
           }}
         >¿No tienes cuenta?</Text>
       </View>
-      <Toast />
+      <Toast
+      
+      />
     </View>
 
   )
@@ -119,6 +140,7 @@ const LoginScreen = ({ navigation }) => {
 
 const style = StyleSheet.create({
   maincontainer: {
+    paddingTop: 40,
     backgroundColor: '#f1f1f1',
     flex: 1
   },
