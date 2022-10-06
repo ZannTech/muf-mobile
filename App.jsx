@@ -6,7 +6,7 @@ export default function App() {
   return (
    <SafeAreaView style={{flex: 1}}>
 <StatusBar
-   style='inverted'
+   style='light'
    hidden={false}
    translucent={false}
 />

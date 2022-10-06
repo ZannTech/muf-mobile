@@ -31,6 +31,7 @@ const MainNavigation = () => {
         }}
 
       >
+        
         <Stack.Screen
           component={LoginScreen}
           name='Login'

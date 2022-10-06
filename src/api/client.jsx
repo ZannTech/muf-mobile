@@ -17,7 +17,6 @@ const ApiClient  = {
             lastname: data.lastname,
             user: data.user
         })
-        console.log(register.data)
         return register.data
     }
 }

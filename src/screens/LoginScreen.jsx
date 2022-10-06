@@ -8,13 +8,14 @@ import { Libs } from '../lib/libs';
 import Toast from 'react-native-toast-message'
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons'
 import { LeftIcon, RightIcon, StyledTextInput, Colors, StyledInputLabel, StyledFormArea } from '../components/styled/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Session from '../storage/storage';
 const { brand, darkLight, primary, gray } = Colors;
 
 const LoginScreen = ({ navigation, route}) => {
   const  register = route.params.register != undefined ? route.params.register : '' ;
   const [loading, setloading] = useState(false)
   useEffect(()=>{
-    console.log(loading)
     if(register != ''){
       Toast.show({
         type: 'success',
@@ -102,12 +103,21 @@ const LoginScreen = ({ navigation, route}) => {
               })
             } else {
               setloading(true)
-              const {message, success} = await ApiClient.auth(userdata)
+              const {message, success, } = await ApiClient.auth(userdata)
               setloading(false);
               if (success === true) {
+                await Session.set(message.email, 'email');
+                await Session.set(message.name + ' ' + message.lastname, 'full_name');
+                await Session.set((message.id).toString(), 'usuid');
+                await Session.set('1', 'loggedIn');
+
+                // AsyncStorage.setItem('loggedIn', '1');
+                // AsyncStorage.setItem('email', message.email)
+                // AsyncStorage.setItem('full_name', message.name + ' ' + message.lastname)
+                // AsyncStorage.setItem('usuid', (message.id).toString());
                navigation.navigate('MainScreen', {
                 screen: 'Main',
-                params: { message: '¡Bienvenido de nuevo!'}
+                params: { message: '¡Bienvenido de nuevo '  + message.name + ' ' + message.lastname + '!', viewed: true}
                })
               } else {
                 Toast.show({
