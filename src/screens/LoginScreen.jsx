@@ -92,7 +92,6 @@ const LoginScreen = ({ navigation, route}) => {
           text={"Iniciar sesión"}
           icon="signup"
           onPress={async () => {
-            setloading(true)
             if (userdata.email === '' || userdata.password === '') {
               Toast.show({
                 type: 'error',
@@ -102,16 +101,14 @@ const LoginScreen = ({ navigation, route}) => {
                 visibilityTime: 2000
               })
             } else {
+              setloading(true)
               const {message, success} = await ApiClient.auth(userdata)
               setloading(false);
               if (success === true) {
-                Toast.show({
-                  type: 'success',
-                  text1: 'Correcto',
-                  text2: message,
-                  position: 'top',
-                  visibilityTime: 2000
-                })
+               navigation.navigate('MainScreen', {
+                screen: 'Main',
+                params: { message: '¡Bienvenido de nuevo!'}
+               })
               } else {
                 Toast.show({
                   type: 'error',
