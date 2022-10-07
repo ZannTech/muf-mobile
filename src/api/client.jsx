@@ -18,6 +18,15 @@ const ApiClient  = {
             user: data.user
         })
         return register.data
+    },
+    Asamblea: {
+        escudo_comunal: async (data) => {
+            const escudo  = await axios.post(url + 'asamblea/escudo', {
+                elemento: data.elemento,
+                porque_identifica: data.porque_identifica
+            })
+            return escudo.data
+        }
     }
 }
 export default ApiClient

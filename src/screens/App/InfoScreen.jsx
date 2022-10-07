@@ -2,12 +2,20 @@ import { View, Text, Alert, ScrollView } from 'react-native'
 import React from 'react'
 import { Avatar, Card, Title, Paragraph, IconButton, Button, Divider } from 'react-native-paper';
 import { FontAwesome } from "@expo/vector-icons"
+import { Header } from '../../components/header';
 
 const LeftContent = props => <Avatar.Icon {...props} icon={'account'} />
 
 const InfoScreen = (navigation) => {
     return (
         <ScrollView>
+            <Header
+            options={{
+                title: 'Acerca de nosotros',
+                notification: true,
+                profile: true
+            }}
+            />
             <Card>
                 <Card.Title title="Acerca de MUF" subtitle="¿Quienes somos?" left={LeftContent} />
                 <Card.Content>

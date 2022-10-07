@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, Image, Alert } from 'react-native'
+import { View, Text, StyleSheet, Image, Alert, SafeAreaView, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Dimensions } from 'react-native'
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 import ButtonGradient from '../components/forms/Button';
 import ApiClient from '../api/client';
 import { Libs } from '../lib/libs';
@@ -38,15 +38,16 @@ const LoginScreen = ({ navigation, route}) => {
     setUserData({ ...userdata, [name]: text })
   }
   return (
-    <View style={style.maincontainer}>
+    <SafeAreaView style={style.maincontainer}>
+      <ScrollView collapsable={true}>
+      <View style={style.container}>
       <Image
         style={{
-          paddingTop: 30,
+          paddingTop: 120,
           height: '30%',
           width: width,
           resizeMode: 'cover',
           position: 'relative',
-          marginTop: -20
         }}
         source={require('./../../assets/muf.png')}
       />
@@ -141,7 +142,8 @@ const LoginScreen = ({ navigation, route}) => {
       
       />
     </View>
-
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -149,11 +151,11 @@ const style = StyleSheet.create({
   maincontainer: {
     paddingTop: 40,
     backgroundColor: '#f1f1f1',
-    flex: 1
   },
   container: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    maxHeight: height + 100
   },
   title: {
     fontSize: 80,

@@ -1,51 +1,54 @@
-import { StyleSheet, Dimensions, ScrollView, } from 'react-native';
-import React, { useEffect, useState } from 'react'
-import { Button, Block, Text, Input, theme } from 'galio-framework';
-const { width } = Dimensions.get('screen');
-import Toast from 'react-native-toast-message'
-import {Header} from '../../components/header';
-import Session from '../../storage/storage';
+import { StyleSheet, Dimensions, ScrollView, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Button, Block, Text, Input, theme, Card } from "galio-framework";
+const { width, height } = Dimensions.get("screen");
+import Toast from "react-native-toast-message";
+import { Header } from "../../components/header";
+import Session from "../../storage/storage";
+import { Paragraph, Title } from "react-native-paper";
+import CardGroup from "../../components/Card";
+import { SafeAreaView } from "react-native-safe-area-context";
 const MainScreen = ({ navigation, route }) => {
-  const viewed = route.params.viewed ? route.params.viewed : false
-  const [name, setname] = useState('')
+  const viewed = route.params.viewed ? route.params.viewed : false;
+  const [name, setname] = useState("");
   useEffect(() => {
+    console.log(height);
     get_name();
     if (viewed != false) {
       Toast.show({
-        type: 'success',
-        text1: '¡Hola!',
+        type: "success",
+        text1: "¡Hola!",
         text2: route.params.message,
-        position: 'top',
-        visibilityTime: 6000
-      })
+        position: "top",
+        visibilityTime: 6000,
+      });
       navigation.setParams({
-        massage: '',
-        viewed: false
-      })
+        massage: "",
+        viewed: false,
+      });
     }
-  })
+  });
   const get_name = async () => {
-    const name = await Session.get('full_name')
-    setname(name)
-  }  
+    const name = await Session.get("full_name");
+    setname(name);
+  };
   return (
-    <Block>
-     <Header options={{
-      title: 'Bienvenido de nuevo '  + name ,
-      notification: true,
-      profile: true
-     }} />
-
-    </Block>
-  )
-}
+    <SafeAreaView>
+      <Header
+        options={{
+          title: "Página Principal",
+          notification: true,
+          profile: true,
+        }}
+      />
+      <ScrollView collapsable={false}>
+          
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   search: {
     height: 48,
     width: width - 32,
@@ -58,14 +61,12 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 10,
-    backgroundColor: '#fff',
-    borderColor: '#fff',
-    textAlign: 'center',
-    alignContent: 'center',
-    justifyContent: 'center'
-  }
-})
+    backgroundColor: "#fff",
+    borderColor: "#fff",
+    textAlign: "center",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+});
 
-
-
-export default MainScreen
+export default MainScreen;

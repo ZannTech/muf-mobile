@@ -16,7 +16,7 @@ export default class ButtonGradient extends Component {
         disabled={this.props.disabled}
         style={{
           marginTop: this.props.mt,
-          width: 200,
+          width: 10,
           alignItems: 'center',
         }}
         onPress={this.props.onPress}
@@ -29,7 +29,7 @@ export default class ButtonGradient extends Component {
 
         >
           {this.props.loading ? <Progress.Circle size={20} indeterminate={true} color={'white'} />
-            : <Text style={styles.text}>          {this.props.text}</Text>}
+            : <Text style={styles.text}>{this.props.text}</Text>}
         </LinearGradient>
       </TouchableOpacity>
     )
@@ -38,18 +38,20 @@ export default class ButtonGradient extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: 200,
+    width: 20,
     alignItems: 'center',
     marginTop: 60
   },
   text: {
     fontSize: 16,
     color: '#fff',
+    textAlign: 'center',
     fontWeight: 'bold'
   },
   button: {
-    width: width - 40,
+    width: width - 100,
     minHeight: 50,
+    textAlign: 'center',
     borderRadius: 25,
     padding: 10,
     alignItems: 'center',
